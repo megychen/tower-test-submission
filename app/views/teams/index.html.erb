@@ -1,0 +1,13 @@
+<div class="col-md-12">
+  <div class="pull-right">
+    <%= link_to("创建/管理团队", new_team_path, class: "btn btn-default") %><br>
+  </div>
+  <table class="table">
+    <% @teams.each do |team| %>
+      <tr>
+        <td><%= team.name %><br></td>
+        <td><%= link_to("更新团队", edit_team_path(team), class: "btn btn-default") %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
