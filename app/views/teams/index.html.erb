@@ -1,13 +1,18 @@
 <div class="col-md-12">
+  <h2 class="text-center">Tower</h2>
+  <%= link_to("注册", new_user_registration_path, class: "btn btn-default") %>
+  <%= link_to("登录", new_user_session_path, class: "btn btn-default") %>
+  <%= link_to("登出", destroy_user_session_path, class: "btn btn-default") %>
   <div class="pull-right">
-    <%= link_to("创建/管理团队", new_team_path, class: "btn btn-default") %><br>
+    <%= link_to("创建/管理团队", new_team_path, class: "btn btn-default") %>
   </div>
   <table class="table">
     <% @teams.each do |team| %>
       <tr>
-        <td><%= team.name %><br></td>
+        <td><%= link_to(team.name, team_path(team)) %><br></td>
         <td><%= link_to("更新团队", edit_team_path(team), class: "btn btn-default") %></td>
       </tr>
     <% end %>
   </table>
+  <hr>
 </div>

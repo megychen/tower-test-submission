@@ -1,0 +1,7 @@
+<div class="col-md-8 col-md-offset-2">
+  <%= simple_form_for [@team, @project] do |f| %>
+    <%= f.input :title, placeholder: "项目名称" %>
+    <%= f.input :description, placeholder: "简单描述项目，便于他人理解（选填）" %>
+    <%= f.submit "提交", :disable_with => "提交中...", class: "btn btn-success" %>
+  <% end %>
+</div>

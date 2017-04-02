@@ -1,1 +1,16 @@
-<%= @team.name %>
+<div class="col-md-12">
+  <div class="pull-right">
+    <%= link_to("创建/管理团队", new_team_path, class: "btn btn-default") %>
+    <%= link_to("创建项目", new_team_project_path(@team), class: "btn btn-default") %>
+  </div>
+  <h5><%= @team.name %></h5>
+  <hr>
+  <h5>所有项目</h5>
+  <table class="table">
+    <% Project.all.each do |project| %>
+      <tr>
+        <td><%= link_to(project.title, project_path(project)) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
