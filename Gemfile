@@ -39,6 +39,9 @@ gem 'bootstrap-sass'
 gem 'simple_form'
 gem 'devise'
 gem 'awesome_rails_console'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
+gem 'aasm'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

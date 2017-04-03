@@ -17,7 +17,7 @@ class MembersController < ApplicationController
     @member.team = @team
     @user = User.find_by_email(@member.email)
     if @user.present?
-      #@member.user_id = @user.id
+      @member.user_id = @user.id
       @member.name = @user.user_name
       @member.save
       flash[:notice] = "邀请成员成功"

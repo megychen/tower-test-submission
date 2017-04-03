@@ -1,0 +1,26 @@
+<% case todo.aasm_state %>
+  <% when "created" %>
+    <%= link_to("开始",
+                start_team_project_todo_path(team, project, todo),
+                class: "btn btn-default btn-sm", method: :post) %>
+    <%= link_to("完成",
+                completed_team_project_todo_path(team, project, todo),
+                class: "btn btn-default btn-sm", method: :post) %>
+
+  <% when "processing" %>
+    <%= link_to("暂停",
+                pause_team_project_todo_path(team, project, todo),
+                class: "btn btn-default btn-sm", method: :post) %>
+    <%= link_to("完成",
+                completed_team_project_todo_path(team, project, todo),
+                class: "btn btn-default btn-sm", method: :post) %>
+
+  <% when "completed" %>
+    <%= link_to("重新打开",
+                reopen_team_project_todo_path(team, project, todo),
+                class: "btn btn-default btn-sm", method: :post) %>
+
+  <% when "deleted" %>
+    <span class="label label-default">任务已删除</span>
+
+  <% end %>

@@ -1,0 +1,12 @@
+<h2 class="text-center">任务列表</h2>
+<div class="todos">
+  <% @project.todos.each do |todo| %>
+    <span><%= link_to(todo.title, team_project_todo_path(@team, @project, todo)) %></span>
+    <% if todo.user.present? %>
+      <span class="label label-default"><%= todo.user.user_name %></span>
+    <% else %>
+      <span class="label label-default">未指派</span>
+    <% end %>
+    <hr>
+  <% end %>
+</div>

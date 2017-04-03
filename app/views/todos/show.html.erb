@@ -1,0 +1,13 @@
+<div class="col-md-8 col-md-offset-2">
+  <span>
+    <%= @todo.title %>
+  </span>
+  <span>
+    <%= @todo.description %>
+  </span>
+  <% if @todo.user.present? %>
+    <span class="label label-default"><%= @todo.user.user_name %></span>
+  <% else %>
+    <span class="label label-default">未指派</span>
+  <% end %>
+</div>

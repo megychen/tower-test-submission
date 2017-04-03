@@ -15,4 +15,6 @@
 //= require turbolinks
 //= require bootstrap/alert
 //= require bootstrap/dropdown
+//= require moment
+//= require bootstrap-datetimepicker
 //= require_tree .

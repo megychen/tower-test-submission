@@ -1,8 +1,44 @@
 <div class="col-md-8 col-md-offset-2">
-  <p>
-    <%= @project.title %>
-  </p>
+  <h2><%= @project.title %></h2>
   <p>
     <%= @project.description %>
-  </p>  
+  </p>
+  <hr>
+  <div>
+    <h3><%= link_to("任务", team_project_todos_path(@team, @project)) %></h3>
+    <div class="todos">
+      <table class="table table-hover">
+        <tbody>
+          <% @project.todos.each do |todo| %>
+            <tr>
+              <td>
+                <span><%= link_to(todo.title, team_project_todo_path(@team, @project, todo)) %></span>
+                <% if todo.user.present? %>
+                  <span class="label label-default"><%= todo.user.user_name %></span>
+                <% else %>
+                  <span class="label label-default">未指派</span>
+                <% end %>
+                <% if todo.deadline.present? %>
+                  <span class="label label-default"><%= todo.deadline.to_s(:short) %></span>
+                <% else %>
+                  <span class="label label-default">未指派时间</span>
+                <% end %>
+              </td>
+              <td>
+                <%= render "todos/state_option", team: @team, project: @project, todo: todo %>
+              </td>
+              <td>
+                <%= link_to("修改任务", edit_team_project_todo_path(@team, @project, todo)) %>
+              </td>
+              <td>
+                <%= link_to("移除任务", team_project_todo_path(@team, @project, todo), method: :delete) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <br>
+    <%= render "todos/new" %>
+
+  </div>
 </div>
