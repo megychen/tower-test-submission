@@ -1,0 +1,6 @@
+<h2 class="text-center">编辑成员信息</h2>
+<%= simple_form_for [@team, @member] do |f| %>
+  <%= f.input :name%>
+  <%= f.input :email%>
+  <%= f.submit "Submit", class: "btn btn-success" %>
+<% end %>

@@ -1,0 +1,5 @@
+<h2 class="text-center">邀请成员</h2>
+<%= simple_form_for [@team, @member] do |f| %>
+  <%= f.input :email, placeholder: "请输入邮箱邀请成员" %>
+  <%= f.submit "Submit", class: "btn btn-success" %>
+<% end %>

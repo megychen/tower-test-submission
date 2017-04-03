@@ -1,2 +1,28 @@
-<%#= link_to("邀请成员", invite_team_path(@team), method: :post) %>
-llllsls
+<h2><%= @team.name %></h2>
+<div class="pull-right">
+  <%= link_to("邀请成员", new_team_member_path(@team)) %>
+</div>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @members.each do |member| %>
+      <tr>
+        <td>
+          <%= member.name %>
+          <% if current_user && member.user_id == current_user.id %>
+            <span class="label label-warning">超级管理员</span>
+          <% end %>
+        </td>
+        <td><%= member.email %></td>
+        <td>
+          <%= link_to("编辑", edit_team_member_path(member.team, member)) %> |
+          <%= link_to("移除", team_member_path(member.team, member), method: :delete) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

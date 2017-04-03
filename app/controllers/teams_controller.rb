@@ -1,6 +1,8 @@
 class TeamsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    @teams = Team.all
+    @teams = current_user.teams
   end
 
   def new
@@ -11,6 +13,11 @@ class TeamsController < ApplicationController
     @team = Team.new(team_params)
     @team.user = current_user
     if @team.save
+      memb = @team.members.create
+      memb.user_id = current_user.id
+      memb.name = current_user.user_name
+      memb.email = current_user.email
+      memb.save
       redirect_to root_path
     else
       render :new
