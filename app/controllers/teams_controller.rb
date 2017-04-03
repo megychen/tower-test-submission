@@ -19,6 +19,7 @@ class TeamsController < ApplicationController
 
   def show
     @team = Team.find(params[:id])
+    @projects = @team.projects
   end
 
   def edit
@@ -38,6 +39,14 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:id])
     @team.destroy
     redirect_to root_path
+  end
+
+  def invite
+    @team = Team.find(params[:team_id])
+    @user = User.find_by_email(:email => params[:email])
+    memb = @team.members.build
+    mem.name = @user.user_name
+    mem.email = @user.email
   end
 
   private
