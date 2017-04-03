@@ -20,8 +20,10 @@ class MembersController < ApplicationController
       #@member.user_id = @user.id
       @member.name = @user.user_name
       @member.save
+      flash[:notice] = "邀请成员成功"
       redirect_to team_members_path(@team)
     else
+      flash[:notice] = "该成员不存在"
       render :new
     end
   end

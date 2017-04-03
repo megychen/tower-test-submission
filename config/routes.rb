@@ -4,12 +4,6 @@ Rails.application.routes.draw do
   resources :teams do
     resources :projects
     resources :members
-    member do
-      post :invite
-      post :remove
-    end
   end
-  resources :projects
-
   root 'teams#index'
 end

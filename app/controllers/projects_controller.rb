@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!
 
   def show
+    @team = Team.find(params[:team_id])
     @project = Project.find(params[:id])
   end
 

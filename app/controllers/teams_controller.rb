@@ -48,14 +48,6 @@ class TeamsController < ApplicationController
     redirect_to root_path
   end
 
-  def invite
-    @team = Team.find(params[:team_id])
-    @user = User.find_by_email(:email => params[:email])
-    memb = @team.members.build
-    mem.name = @user.user_name
-    mem.email = @user.email
-  end
-
   private
 
   def team_params
