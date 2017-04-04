@@ -1,5 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_team_permission, :only => [:show, :edit, :update, :destroy]
 
   def index
     @teams = current_user.teams
@@ -52,5 +53,13 @@ class TeamsController < ApplicationController
 
   def team_params
     params.require(:team).permit(:name)
+  end
+
+  def check_team_permission
+    @team = Team.find(params[:id])
+    unless current_user.has_permission_to_team?(@team)
+      flash[:alert] = "你不是这个团队成员"
+      redirect_to root_path
+    end
   end
 end

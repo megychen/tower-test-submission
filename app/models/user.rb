@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   after_create :create_team
-  after_create :change_onwer
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -23,8 +22,8 @@ class User < ApplicationRecord
     memb.save
   end
 
-  def change_onwer
-    self.team_owner = true
-    self.save
+  def has_permission_to_team?(team)
+    team.members.exists?(user_id: self.id)
   end
+
 end
