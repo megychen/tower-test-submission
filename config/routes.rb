@@ -11,6 +11,7 @@ Rails.application.routes.draw do
           post :reopen
           post :deleted
         end
+        resources :comments
       end
     end
     resources :members

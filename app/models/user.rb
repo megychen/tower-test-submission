@@ -8,6 +8,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :teams
   has_many :todos
+  has_many :comments
 
 
   def create_team

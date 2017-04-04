@@ -7,10 +7,10 @@
   <br>
   <br>
   <hr>
-  <div class="row">
+  <div class="row projects">
     <% @projects.each do |project| %>
       <div class="col-md-3 col-sm-6 text-center">
-        <%= link_to(project.title, team_project_path(project.team, project)) %>
+        <%= link_to(project.title, team_project_path(project.team, project), class: "project-item") %>
       </div>
     <% end %>
   </div>

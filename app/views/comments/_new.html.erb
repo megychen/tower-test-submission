@@ -1,0 +1,6 @@
+<div class="col-md-12">
+  <%= simple_form_for [@team,@project,@todo,@comment] do |f| %>
+    <%= f.input :content, label: "", row: 5 %>
+    <%= f.submit "提交评论", class: "btn btn-success" %>
+  <% end %>
+</div>

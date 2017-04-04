@@ -2,6 +2,7 @@ class Todo < ApplicationRecord
   validates :title, presence: true
   belongs_to :project
   belongs_to :user, :optional => true
+  has_many :comments
 
   include AASM
 
@@ -18,7 +19,7 @@ class Todo < ApplicationRecord
     event :pause do
       transitions from: :processing, to: :created
     end
-    
+
     event :completed do
       transitions from: %i(created processing), to: :completed
     end

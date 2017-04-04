@@ -10,4 +10,25 @@
   <% else %>
     <span class="label label-default">未指派</span>
   <% end %>
+  <div class="comments">
+    <table class="table">
+      <tbody>
+        <% @todo.comments.each do |comment| %>
+          <tr>
+
+            <td><%= comment.content %></td>
+            <td><%= comment.user.user_name %></td>
+            <td><%= comment.created_at.to_s(:short) %></td>
+            <td>
+              <%= link_to("编辑", edit_team_project_todo_comment_path(@team,@project,@todo,comment)) %> | 
+              <%= link_to("删除", team_project_todo_comment_path(@team,@project,@todo,comment), :method => :delete) %>
+            </td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+  <%= render "comments/new" %>
 </div>

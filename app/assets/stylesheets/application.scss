@@ -16,4 +16,33 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "bootstrap-datetimepicker"
+@import "bootstrap-datetimepicker";
+
+body {
+  background-color: #f0f4e7;
+}
+
+.navbar-default {
+  background-color: #f0f4e7;
+  border: 0;
+}
+
+.main-content {
+  border: 1px solid #aaa;
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 30px;
+  background: #fff;
+}
+
+.projects {
+  .project-item {
+    margin: 50px;
+    padding: 30px;
+  }
+  .project-item:hover {
+
+    border: 1px solid #aaa;
+
+  }
+}
