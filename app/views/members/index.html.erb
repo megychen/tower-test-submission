@@ -13,7 +13,7 @@
       <tr>
         <td>
           <%= member.name %>
-          <% if current_user && member.user_id == current_user.id %>
+          <% if current_user && member.user_id == member.team.user_id %>
             <span class="label label-warning">超级管理员</span>
           <% end %>
         </td>

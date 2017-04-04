@@ -1,18 +1,18 @@
 class MembersController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_team
+  before_action :find_team_and_project, :only => [:edit, :uupdate, :destroy]
+  before_action :check_team_permission, :except => [:index, :show]
 
   def index
-    @team = Team.find(params[:team_id])
     @members = @team.members
   end
 
   def new
-    @team = Team.find(params[:team_id])
     @member = Member.new
   end
 
   def create
-    @team = Team.find(params[:team_id])
     @member = Member.new(member_params)
     @member.team = @team
     @user = User.find_by_email(@member.email)
@@ -29,13 +29,9 @@ class MembersController < ApplicationController
   end
 
   def edit
-    @team = Team.find(params[:team_id])
-    @member = Member.find(params[:id])
   end
 
   def update
-    @team = Team.find(params[:team_id])
-    @member = Member.find(params[:id])
     if @member.update(member_params)
       redirect_to team_members_path(@team)
     else
@@ -44,13 +40,26 @@ class MembersController < ApplicationController
   end
 
   def destroy
-    @team = Team.find(params[:team_id])
-    @member = Member.find(params[:id])
     @member.destroy
     redirect_to team_members_path(@team)
   end
 
   private
+
+  def find_team
+    @team = Team.find(params[:team_id])
+  end
+
+  def find_team_and_project
+    @member = Member.find(params[:id])
+  end
+
+  def check_team_permission
+    @team = Team.find(params[:team_id])
+    unless current_user.has_permission_to_team?(@team)
+      redirect_to "/", notice: "You have no permission"
+    end
+  end
 
   def member_params
     params.require(:member).permit(:name, :email)

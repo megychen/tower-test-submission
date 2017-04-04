@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         end
         resources :comments
       end
+      resources :accesses
     end
     resources :members
   end

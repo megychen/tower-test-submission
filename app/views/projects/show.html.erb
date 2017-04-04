@@ -1,4 +1,9 @@
 <div class="col-md-8 col-md-offset-2">
+  <div class="pull-right">
+    <%= link_to("编辑", edit_team_project_path(@team, @project)) %> |
+    <%= link_to("删除", team_project_path(@team, @project), method: :delete) %> |
+    <%= link_to("邀请成员", new_team_project_access_path(@team,@project)) %>
+  </div>
   <h2><%= @project.title %></h2>
   <p>
     <%= @project.description %>
@@ -39,6 +44,5 @@
       </table>
     <br>
     <%= render "todos/new" %>
-
   </div>
 </div>

@@ -8,7 +8,8 @@ class User < ApplicationRecord
   has_many :teams
   has_many :todos
   has_many :comments
-
+  has_many :accesses
+  has_many :projects
 
   def create_team
     tm = teams.build
@@ -24,6 +25,15 @@ class User < ApplicationRecord
 
   def has_permission_to_team?(team)
     team.members.exists?(user_id: self.id)
+  end
+
+  def has_permission_to_project?(project_id)
+    permission = self.accesses.find_by_project_id(project_id)
+    if permission.present? && permission.level == "owner" or permission.level == "member"
+      true
+    else
+      false
+    end
   end
 
 end
