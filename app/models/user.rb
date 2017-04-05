@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :accesses
   has_many :projects
+  has_many :events
 
   def create_team
     tm = teams.build

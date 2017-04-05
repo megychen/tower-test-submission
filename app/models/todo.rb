@@ -37,5 +37,13 @@ class Todo < ApplicationRecord
   end
 
   tracked owner: Proc.new{ |controller, model| controller.current_user }
-
 end
+
+# t.string   "trackable_type"
+# t.integer  "trackable_id"
+# t.string   "owner_type"
+# t.integer  "owner_id"
+# t.string   "key"
+# t.text     "parameters"
+# t.string   "recipient_type"
+# t.integer  "recipient_id"
