@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   after_create :create_team
-
+  validates :user_name, presence: true
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :accesses
   has_many :projects
   has_many :events
+  has_many :assignments, dependent: :destroy
 
   def create_team
     tm = teams.build

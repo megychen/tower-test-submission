@@ -1,4 +1,5 @@
 class Todo < ApplicationRecord
+  after_create :create_assignment
   include PublicActivity::Model
   tracked
 
@@ -6,6 +7,8 @@ class Todo < ApplicationRecord
   belongs_to :project
   belongs_to :user, :optional => true
   has_many :comments
+  has_one :assignment, :dependent => :destroy
+  accepts_nested_attributes_for :assignment, allow_destroy: true
 
   include AASM
 
@@ -31,8 +34,14 @@ class Todo < ApplicationRecord
       transitions from: :completed, to: :created
     end
 
-    event :delete do
+    event :deleted do
       transitions from: %i(created processing), to: :deleted
+    end
+  end
+
+  def create_assignment
+    if self.user_id.present?
+      Assignment.create!(user_id: self.user_id, todo_id: self.id, deadline: self.deadline)
     end
   end
 

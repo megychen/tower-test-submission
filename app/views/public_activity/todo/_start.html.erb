@@ -3,7 +3,7 @@
   <small class="text-muted"><%= a.created_at.strftime('%H:%M:%S %-d %B %Y') %></small><br/>
   <strong><%= activity.owner ? activity.owner.user_name : 'Member' %></strong>
   <% if a.trackable %>
-    开始了任务 <b><%= a.trackable.title %>.</b>
+    开始了任务 <b><%= link_to(a.trackable.title, team_project_todo_path(@team, a.trackable.project,a.trackable)) %>.</b>
   <% else %>
     创建的项目已被删除.
   <% end %>

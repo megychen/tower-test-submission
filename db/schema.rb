@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405070845) do
+ActiveRecord::Schema.define(version: 20170405092929) do
 
   create_table "accesses", force: :cascade do |t|
     t.integer  "user_id"
@@ -34,6 +34,14 @@ ActiveRecord::Schema.define(version: 20170405070845) do
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
+  end
+
+  create_table "assignments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "todo_id"
+    t.datetime "deadline"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "comments", force: :cascade do |t|

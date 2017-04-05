@@ -18,13 +18,13 @@
             <tr>
               <td>
                 <span><%= link_to(todo.title, team_project_todo_path(@team, @project, todo)) %></span>
-                <% if todo.user.present? %>
-                  <span class="label label-default"><%= todo.user.user_name %></span>
+                <% if todo.assignment.present? && todo.assignment.user.present? %>
+                  <span class="label label-info"><%= link_to(todo.assignment.user.user_name, edit_team_project_todo_assignment_path(@team,@project,todo)) %></span>
                 <% else %>
-                  <span class="label label-default">未指派</span>
+                  <span class="label label-warning"><%= link_to("未指派", new_team_project_todo_assignment_path(@team,@project,todo)) %></span>
                 <% end %>
-                <% if todo.deadline.present? %>
-                  <span class="label label-default"><%= todo.deadline.to_s(:short) %></span>
+                <% if todo.assignment.present? && todo.assignment.deadline.present? %>
+                  <span class="label label-default"><%= todo.assignment.deadline.to_s(:short) %></span>
                 <% else %>
                   <span class="label label-default">未指派时间</span>
                 <% end %>

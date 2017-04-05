@@ -14,6 +14,7 @@ Rails.application.routes.draw do
           post :deleted
         end
         resources :comments
+        resources :assignments
       end
       resources :accesses
     end

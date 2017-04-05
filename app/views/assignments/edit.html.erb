@@ -1,0 +1,21 @@
+<h2 class="text-center">重新指派任务</h2>
+<%= simple_form_for [@team, @project, @todo, @assignment] do |f| %>
+  <%= select_tag(:user_id, options_for_select(@team.members.map { |c| [c.name, c.user_id] }), :prompt => "将任务指派给") %>
+  <br><br>
+  <div class='input-group date' id='datetimepicker1'>
+    <input type='text' name="assignment[deadline]" placeholder="指派截止日期" class="form-control" />
+    <span class="input-group-addon">
+       <span class="glyphicon glyphicon-calendar"></span>
+    </span>
+  </div>
+  <br>
+  <%= f.submit "修改任务", class: "btn btn-success" %>
+<% end %>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+          format: 'YYYY-MM-DD'
+       });
+});
+</script>

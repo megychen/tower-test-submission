@@ -2,7 +2,7 @@ class TodosController < ApplicationController
   before_action :authenticate_user!
   before_action :find_team_and_project
   before_action :find_todo_list, :except => [:index, :new, :create]
-  before_action :stop_public_activity, :only => [:start, :pause, :completed, :reopen]
+  before_action :stop_public_activity, :only => [:update, :start, :pause, :completed, :reopen]
 
   def index
     @todos = @project.todos
@@ -31,6 +31,8 @@ class TodosController < ApplicationController
   end
 
   def update
+    @todo.user_id = params[:user_id]
+    Todo.public_activity_off
     @todo.update(todo_params)
     if @todo.save
       redirect_to team_project_path(@team, @project)
@@ -77,8 +79,8 @@ class TodosController < ApplicationController
     redirect_to :back
   end
 
-  def delete
-    @todo.delete!
+  def deleted
+    @todo.deleted!
     flash[:notice] = "删除任务"
     redirect_to :back
   end
