@@ -1,4 +1,7 @@
 class Todo < ApplicationRecord
+  include PublicActivity::Model
+  tracked
+
   validates :title, presence: true
   belongs_to :project
   belongs_to :user, :optional => true
@@ -32,4 +35,7 @@ class Todo < ApplicationRecord
       transitions from: %i(created processing), to: :deleted
     end
   end
+
+  tracked owner: Proc.new{ |controller, model| controller.current_user }
+
 end

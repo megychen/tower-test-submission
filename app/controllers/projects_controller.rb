@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project.destroy
-    redirect_to :back
+    redirect_to team_path(@team)
   end
 
   private

@@ -1,0 +1,10 @@
+<li class="list-group-item">
+  <span class="glyphicon glyphicon-edit"></span>
+  <small class="text-muted"><%= a.created_at.strftime('%H:%M:%S %-d %B %Y') %></small><br/>
+  <strong><%= activity.owner ? activity.owner.user_name : 'Member' %></strong>
+  <% if a.trackable %>
+    更新了项目：<b><%= a.trackable.title %></b>.
+  <% else %>
+    目前项目已被删除
+  <% end %>
+</li>

@@ -20,4 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activity:
+    project:
+      create: '创建了项目'
+      destroy: '删除了项目'
+      update: '更新了项目'

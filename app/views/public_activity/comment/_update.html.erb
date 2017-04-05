@@ -1,0 +1,13 @@
+<li class="list-group-item">
+  <span class="glyphicon glyphicon-edit"></span>
+  <small class="text-muted"><%= a.created_at.strftime('%H:%M:%S %-d %B %Y') %></small><br/>
+  <strong><%= activity.owner ? activity.owner.user_name : 'Member' %></strong>
+  <% if a.trackable %>
+    重新回复了任务： <b><%= a.trackable.todo.title %>.</b>
+    <p>
+      <%= a.trackable.content %>
+    </p>
+  <% else %>
+    回复内容已被删除.
+  <% end %>
+</li>
