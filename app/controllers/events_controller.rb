@@ -4,6 +4,5 @@ class EventsController < ApplicationController
   def index
     @team = Team.find(params[:team_id])
     @activities = PublicActivity::Activity.order('created_at DESC').limit(50)
-    #@activities = @activities.group_by { |a| a.trackable_type }
   end
 end

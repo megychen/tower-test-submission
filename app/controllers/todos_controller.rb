@@ -2,6 +2,7 @@ class TodosController < ApplicationController
   before_action :authenticate_user!
   before_action :find_team_and_project
   before_action :find_todo_list, :except => [:index, :new, :create]
+  before_action :stop_public_activity, :only => [:start, :pause, :completed, :reopen]
 
   def index
     @todos = @project.todos
@@ -40,29 +41,38 @@ class TodosController < ApplicationController
 
   def destroy
     @todo.destroy
+
     redirect_to :back
   end
 
   def start
     @todo.start!
+    Todo.public_activity_on
+    @todo.create_activity :start
     flash[:notice] = "开始处理任务"
     redirect_to :back
   end
 
   def pause
     @todo.pause!
+    Todo.public_activity_on
+    @todo.create_activity :pause
     flash[:notice] = "停止处理任务"
     redirect_to :back
   end
 
   def completed
     @todo.completed!
+    Todo.public_activity_on
+    @todo.create_activity :completed
     flash[:notice] = "已完成任务"
     redirect_to :back
   end
 
   def reopen
     @todo.reopen!
+    Todo.public_activity_on
+    @todo.create_activity :reopen
     flash[:notice] = "重新打开任务"
     redirect_to :back
   end
@@ -82,6 +92,10 @@ class TodosController < ApplicationController
 
   def find_todo_list
     @todo = Todo.find(params[:id])
+  end
+
+  def stop_public_activity
+    Todo.public_activity_off
   end
 
   def todo_params

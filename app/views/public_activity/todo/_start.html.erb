@@ -1,10 +1,10 @@
 <li class="list-group-item">
-  <span class="glyphicon glyphicon-edit"></span>
+  <span class="glyphicon glyphicon-plus"></span>
   <small class="text-muted"><%= a.created_at.strftime('%H:%M:%S %-d %B %Y') %></small><br/>
   <strong><%= activity.owner ? activity.owner.user_name : 'Member' %></strong>
   <% if a.trackable %>
-    更新了任务：<b><%= a.trackable.title %></b>.(<%= a.trackable.project.title %>)
+    开始了任务 <b><%= a.trackable.title %>.</b>
   <% else %>
-    目前任务已被删除
+    创建的项目已被删除.
   <% end %>
 </li>
