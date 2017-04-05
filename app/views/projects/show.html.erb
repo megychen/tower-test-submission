@@ -19,7 +19,7 @@
               <td>
                 <span><%= link_to(todo.title, team_project_todo_path(@team, @project, todo)) %></span>
                 <% if todo.assignment.present? && todo.assignment.user.present? %>
-                  <span class="label label-info"><%= link_to(todo.assignment.user.user_name, edit_team_project_todo_assignment_path(@team,@project,todo)) %></span>
+                  <span class="label label-info"><%= link_to(todo.assignment.user.user_name, edit_team_project_todo_assignment_path(@team,@project,todo,todo.assignment)) %></span>
                 <% else %>
                   <span class="label label-warning"><%= link_to("未指派", new_team_project_todo_assignment_path(@team,@project,todo)) %></span>
                 <% end %>

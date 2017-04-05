@@ -45,7 +45,7 @@ class Todo < ApplicationRecord
     end
   end
 
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
+  tracked owner: Proc.new{ |controller, model| controller.current_user }, except: [:update]
 end
 
 # t.string   "trackable_type"

@@ -2,7 +2,7 @@ class TodosController < ApplicationController
   before_action :authenticate_user!
   before_action :find_team_and_project
   before_action :find_todo_list, :except => [:index, :new, :create]
-  before_action :stop_public_activity, :only => [:update, :start, :pause, :completed, :reopen]
+  before_action :stop_public_activity, :only => [:start, :pause, :completed, :reopen]
 
   def index
     @todos = @project.todos
@@ -32,9 +32,9 @@ class TodosController < ApplicationController
 
   def update
     @todo.user_id = params[:user_id]
-    Todo.public_activity_off
     @todo.update(todo_params)
     if @todo.save
+      Todo.public_activity_off
       redirect_to team_project_path(@team, @project)
     else
       render :edit

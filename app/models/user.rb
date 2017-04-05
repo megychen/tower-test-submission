@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   after_create :create_team
   validates :user_name, presence: true
+  validates :team_name, presence: true
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -29,9 +30,9 @@ class User < ApplicationRecord
     team.members.exists?(user_id: self.id)
   end
 
-  def has_permission_to_project?(project_id)
-    permission = self.accesses.find_by_project_id(project_id)
-    if permission.present? && permission.level == "owner" or permission.level == "member"
+  def has_permission_to_project?(project)
+    access = self.accesses.find_by_project_id(project.id)
+    if access.present? 
       true
     else
       false

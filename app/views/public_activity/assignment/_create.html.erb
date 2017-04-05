@@ -2,8 +2,8 @@
   <span class="glyphicon glyphicon-plus"></span>
   <small class="text-muted"><%= a.created_at.strftime('%H:%M:%S %-d %B %Y') %></small><br/>
   <strong><%= activity.owner ? activity.owner.user_name : 'Member' %></strong>
-  <% if a.trackable %>
-    指派了任务 <b><%= link_to(a.trackable.todo.title, team_project_todo_path(@team, a.trackable.todo.project,a.trackable.todo)) %>.</b>(<%= link_to(a.trackable.todo.project.title, team_project_path(@team, a.trackable.todo.project)) %>)
+  <% if a.trackable && a.trackable.todo.present? %>
+    指派了任务 <b><%= link_to(a.trackable.todo.title, team_project_todo_path(@team, a.trackable.todo.project,a.trackable.todo)) %>.</b>
   <% else %>
     创建的项目已被删除.
   <% end %>

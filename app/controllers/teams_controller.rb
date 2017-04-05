@@ -27,7 +27,8 @@ class TeamsController < ApplicationController
 
   def show
     @team = Team.find(params[:id])
-    @projects = @team.projects
+    project_accesses = current_user.accesses.select("project_id")
+    @projects = @team.projects.where(id: project_accesses)
   end
 
   def edit

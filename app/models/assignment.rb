@@ -5,5 +5,5 @@ class Assignment < ApplicationRecord
   belongs_to :todo
   belongs_to :user
 
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
+  tracked except: :destroy, owner: Proc.new{ |controller, model| controller.current_user }
 end

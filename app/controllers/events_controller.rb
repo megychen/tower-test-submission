@@ -3,6 +3,7 @@ class EventsController < ApplicationController
 
   def index
     @team = Team.find(params[:team_id])
-    @activities = PublicActivity::Activity.order('created_at DESC').limit(50)
+    project_permissions = current_user.accesses.select("user_id")
+    @activities = PublicActivity::Activity.where(:owner_id => project_permissions).order('created_at DESC').limit(50)
   end
 end
