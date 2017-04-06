@@ -4,14 +4,21 @@ class Project < ApplicationRecord
   tracked
 
   after_create :add_project_permission
+  after_create :generate_event
+
   validates :title, presence: true
   belongs_to :team
   has_many :todos
   belongs_to :user
   has_many :accesses
+  has_many :events
 
   def add_project_permission
     Access.create(user_id: self.user.id, project_id: self.id, permission: "owner")
+  end
+
+  def generate_event
+    Event.create!(user_id: self.user.id, project_id: self.id, action: "创建了项目:")
   end
 
   tracked owner: Proc.new{ |controller, model| controller.current_user }

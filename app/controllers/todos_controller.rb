@@ -2,7 +2,7 @@ class TodosController < ApplicationController
   before_action :authenticate_user!
   before_action :find_team_and_project
   before_action :find_todo_list, :except => [:index, :new, :create]
-  before_action :stop_public_activity, :only => [:start, :pause, :completed, :reopen]
+  before_action :assign_todo, :only => [:start, :pause, :completed, :reopne]
 
   def index
     @todos = @project.todos
@@ -15,7 +15,12 @@ class TodosController < ApplicationController
   def create
     @todo = Todo.new(todo_params)
     @todo.project = @project
-    @todo.user_id = params[:user_id]
+    # if params[:user_id].present?
+    #   @todo.user_id = params[:user_id]
+    # else
+    #   @todo.user = current_user
+    # end
+
     if @todo.save!
       redirect_to :back
     else
@@ -34,7 +39,6 @@ class TodosController < ApplicationController
     @todo.user_id = params[:user_id]
     @todo.update(todo_params)
     if @todo.save
-      Todo.public_activity_off
       redirect_to team_project_path(@team, @project)
     else
       render :edit
@@ -49,32 +53,23 @@ class TodosController < ApplicationController
 
   def start
     @todo.start!
-    Todo.public_activity_on
-    @todo.create_activity :start
-    flash[:notice] = "开始处理任务"
     redirect_to :back
   end
 
   def pause
     @todo.pause!
-    Todo.public_activity_on
-    @todo.create_activity :pause
     flash[:notice] = "停止处理任务"
     redirect_to :back
   end
 
   def completed
     @todo.completed!
-    Todo.public_activity_on
-    @todo.create_activity :completed
     flash[:notice] = "已完成任务"
     redirect_to :back
   end
 
   def reopen
     @todo.reopen!
-    Todo.public_activity_on
-    @todo.create_activity :reopen
     flash[:notice] = "重新打开任务"
     redirect_to :back
   end
@@ -96,11 +91,13 @@ class TodosController < ApplicationController
     @todo = Todo.find(params[:id])
   end
 
-  def stop_public_activity
-    Todo.public_activity_off
-  end
-
   def todo_params
     params.require(:todo).permit(:title, :description, :user_id, :deadline)
+  end
+
+  def assign_todo
+    if @todo.user_id == nil
+      redirect_to :back, alert: "请先指派任务"
+    end
   end
 end

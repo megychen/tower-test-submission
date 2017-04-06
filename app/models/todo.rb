@@ -1,10 +1,11 @@
 class Todo < ApplicationRecord
   after_create :create_assignment
-  include PublicActivity::Model
-  tracked
+  after_create :generate_event
+  after_update :generate_todo_status_event
 
   validates :title, presence: true
   belongs_to :project
+  has_many :events, :dependent => :destroy
   belongs_to :user, :optional => true
   has_many :comments
   has_one :assignment, :dependent => :destroy
@@ -45,14 +46,20 @@ class Todo < ApplicationRecord
     end
   end
 
-  tracked owner: Proc.new{ |controller, model| controller.current_user }, except: [:update]
-end
+  def generate_event
+    Event.create!(user_id: self.user_id, project_id: self.project_id, todo_id: self.id, action: "创建了任务:")
+  end
 
-# t.string   "trackable_type"
-# t.integer  "trackable_id"
-# t.string   "owner_type"
-# t.integer  "owner_id"
-# t.string   "key"
-# t.text     "parameters"
-# t.string   "recipient_type"
-# t.integer  "recipient_id"
+  def generate_todo_status_event
+    if self.aasm_state_changed? && self.aasm_state == "processing"
+      Event.create!(user_id: self.user.id, project_id: self.project.id, todo_id: self.id, action: "开始了任务:")
+    elsif self.aasm_state_was == "processing" && self.aasm_state == "created"
+      Event.create!(user_id: self.user.id, project_id: self.project.id, todo_id: self.id, action: "暂停了任务:")
+    elsif self.aasm_state_changed? && self.aasm_state == "completed"
+      Event.create!(user_id: self.user.id, project_id: self.project.id, todo_id: self.id, action: "完成了任务:")
+    elsif self.aasm_state_was == "completed" && self.aasm_state == "created"
+      Event.create!(user_id: self.user.id, project_id: self.project.id, todo_id: self.id, action: "重新打开了任务:")
+    end
+  end
+
+end

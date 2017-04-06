@@ -1,8 +1,9 @@
 class Comment < ApplicationRecord
-  include PublicActivity::Model
-  tracked
+  after_create :generate_event
   belongs_to :user
   belongs_to :todo
 
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
+  def generate_event
+    Event.create!(user_id: self.user_id, project_id: self.todo.project_id, todo_id: self.todo.id, action: "回复了任务:")
+  end
 end
