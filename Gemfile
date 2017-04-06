@@ -45,10 +45,16 @@ gem 'public_activity'
 gem 'pundit'
 gem 'cancancan'
 
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'sqlite3'
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'rails-controller-testing'
+  gem "factory_girl_rails"
+  gem "shoulda-matchers", "3.1.1"
 end
 
 group :development do
