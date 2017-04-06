@@ -1,16 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe ProjectsController, type: :controller do
+RSpec.describe TodosController, type: :controller do
   before do
     @team = Team.create!(name: "FOO")
     user = User.create!(:email => "foobar@example.com", :password => "12345678", :user_name => "foobar", :team_name => "footeam")
     @project = Project.create!(title: "project 1", description: "foo", user_id: user.id, team_id: @team.id)
+    @todo = Todo.create!(title: "task", user_id: user.id, project_id: @project.id)
     sign_in(user)
   end
 
   describe "#show" do
     it "can go to show page if has permission" do
-      get :show, :id => @project.id, :team_id => @team.id
+      get :show, :id => @todo.id, :project_id => @project.id, :team_id => @team.id
       expect(response).to have_http_status(200)
       expect(response).to render_template(:show)
     end
@@ -22,22 +23,16 @@ RSpec.describe ProjectsController, type: :controller do
         sign_in(User.last)
       end
       it "permission failed" do
-        get :show, :id => @project.id, :team_id => @team.id
+        get :show, :id => @todo.id, :project_id => @project.id, :team_id => @team.id
         expect(response).to have_http_status(302)
         expect(response).to redirect_to root_path
       end
     end
   end
 
-  it "#new" do
-    get :new, :team_id => @team.id
-    expect(response).to have_http_status(200)
-    expect(response).to render_template(:new)
-  end
-
   describe "#edit" do
     it "has permission to edit" do
-      get :edit, :id => @project.id, :team_id => @team.id
+      get :edit, :id => @todo.id, :project_id => @project.id, :team_id => @team.id
       expect(response).to have_http_status(200)
       expect(response).to render_template(:edit)
     end
@@ -49,7 +44,7 @@ RSpec.describe ProjectsController, type: :controller do
         sign_in(User.last)
       end
       it "permission failed" do
-        get :edit, :id => @project.id, :team_id => @team.id
+        get :edit, :id => @todo.id, :project_id => @project.id, :team_id => @team.id
         expect(response).to have_http_status(302)
         expect(response).to redirect_to root_path
       end
@@ -57,71 +52,56 @@ RSpec.describe ProjectsController, type: :controller do
   end
 
 
-  describe "#create" do
+  xdescribe "#create" do
     before do
-      project = Project.new
-      @project_params = { :title => "lll1", :description => "des", user_id: User.first.id, :team_id => @team.id }
+      todo = Todo.new
+      @todo_params = { :title => "task1", :description => "sdkckdjc", :user_id => nil, :deadline => "" }
     end
 
     it "creates records" do
-      expect{ post :create, :team_id => @team.id, project: @project_params }.to change{ Project.all.size }.by(1)
+      expect{ post :create, :project_id => @project.id, :team_id => @team.id, :todo => @todo_params }.to change{ Todo.all.size }.by(1)
     end
 
     it "redirect on success" do
-      post :create, :team_id => @team.id, project: @project_params
+      post :create, :project_id => @project.id, :team_id => @team.id, todo: @todo_params
       expect(response).not_to have_http_status(200)
       expect(response).to have_http_status(302)
-      expect(response).to redirect_to team_path(@team)
+      expect(response).to redirect_to team_project_path(@team, @project)
     end
-
-    it "redirect :new on fail" do
-      allow_any_instance_of(Project).to receive(:save).and_return(false)
-      post :create, :team_id => @team.id, project: @project_params
-      expect(response).not_to have_http_status(302)
-      expect(response).to render_template(:new)
-    end
-
   end
 
-  xdescribe "#update" do
+  describe "#update" do
     before do
       u = User.create!( :email => "foobar123@example.com", :password => "12345678", :user_name => "foobar123", :team_name => "footeam123")
       #sign_in(User.last)
-      @project_params = { :title => "name"}
+      @todo_params = { :user_id => User.first.id }
     end
 
     it "changes records" do
-      post :update, :team_id => @team.id, :id => @project.id, project: @project_params
-      expect(Project.find(@project[:id])[:title]).to eq("name")
+      post :update, :id => @todo.id, :team_id => @team.id, :project_id => @project.id, todo: @todo_params
+      expect(Project.find(@todo[:id])[:user_id]).to eq(1)
     end
 
     it "redirect on success" do
-      post :update, :team_id => @team.id, :id => @project.id, project: @project_params
+      post :update, :id => @todo.id, :team_id => @team.id, :project_id => @project.id, todo: @todo_params
       expect(response).not_to have_http_status(200)
       expect(response).to have_http_status(302)
       expect(response).to redirect_to team_project_path
-    end
-
-    it "redirect :edit on fail" do
-      allow_any_instance_of(Project).to receive(:update).and_return(false)
-      post :update, :team_id => @team.id, id: @project[:id]
-      expect(response).not_to have_http_status(302)
-      expect(response).to render_template(:edit)
     end
   end
 
   describe "#destroy" do
     before do
-      @project_2= Project.first || Project.create(title: "project 2", description: "foo2", user_id: user.id, team_id: @team.id)
+      @todo_2 = Todo.first || Todo.create(title: "task 2", description: "task2")
     end
     it "destroy record" do
-      expect{ delete :destroy, team_id: @team[:id], id: @project.id }.to change{ Project.all.size }.by(-1)
+      expect{ delete :destroy, :id => @todo.id, team_id: @team[:id], project_id: @project.id }.to change{ Todo.all.size }.by(-1)
     end
 
     it "redirect_to index after destroy" do
-      delete :destroy, team_id: @team.id, id: @project[:id]
+      delete :destroy, :id => @todo.id, team_id: @team.id, project_id: @project[:id]
       expect(response).to have_http_status(302)
-      expect(response).to redirect_to team_projects_path
+      expect(response).to redirect_to team_project_path(@team, @project)
     end
 
     describe "redirect_to root_path if no permission" do
@@ -130,7 +110,7 @@ RSpec.describe ProjectsController, type: :controller do
         sign_in(User.last)
       end
       it "permission failed" do
-        delete :destroy, team_id: @team.id, id: @project[:id]
+        delete :destroy, :id => @todo.id, team_id: @team.id, project_id: @project[:id]
         expect(response).to have_http_status(302)
         expect(response).to redirect_to root_path
       end

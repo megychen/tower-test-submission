@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   before_action :find_team
   before_action :find_project, :only => [:show, :edit, :destroy, :update, :members]
   before_action :check_owner_permission, :only => [:edit, :destroy, :update]
-  #before_action :check_project_permission
+  before_action :check_project_permission, :only => [:show, :edit, :destroy, :update]
 
   def show
     @todo = Todo.new
@@ -60,13 +60,13 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # def check_project_permission
-  #   @project = Project.find(params[:id])
-  #   unless current_user.has_permission_to_project?(@project)
-  #     flash[:warning] = "You have no permission"
-  #     redirect_to "/"
-  #   end
-  # end
+  def check_project_permission
+    @project = Project.find(params[:id])
+    unless current_user.has_permission_to_project?(@project)
+      flash[:warning] = "You have no permission"
+      redirect_to "/"
+    end
+  end
 
   def project_params
     params.require(:project).permit(:title, :description)

@@ -3,6 +3,7 @@ class TodosController < ApplicationController
   before_action :find_team_and_project
   before_action :find_todo_list, :except => [:index, :new, :create]
   before_action :assign_todo, :only => [:start, :pause, :completed, :reopne]
+  before_action :check_project_permission, :only => [:show, :edit, :update, :destroy]
 
   def index
     @todos = @project.todos
@@ -22,7 +23,7 @@ class TodosController < ApplicationController
     # end
 
     if @todo.save!
-      redirect_to :back
+      redirect_to team_project_path(@team,@project)
     else
       render "projects/show"
     end
@@ -48,7 +49,7 @@ class TodosController < ApplicationController
   def destroy
     @todo.destroy
 
-    redirect_to :back
+    redirect_to team_project_path(@team, @project)
   end
 
   def start
@@ -98,6 +99,14 @@ class TodosController < ApplicationController
   def assign_todo
     if @todo.user_id == nil
       redirect_to :back, alert: "请先指派任务"
+    end
+  end
+
+  def check_project_permission
+    @project = @todo.project
+    unless current_user.has_permission_to_project?(@project)
+      flash[:warning] = "You have no permission"
+      redirect_to "/"
     end
   end
 end

@@ -1,23 +1,21 @@
 <h4 class="text-center">动态显示</h4>
 
 <% @events.each do |ac| %>
-  <% title = ac.project.title %>
-  <% if ac.project.title == title %>
-    <%= ac.created_at.strftime('%H:%M:%S') %>
-    <% if ac.user.present? %>
-      <%= ac.user.user_name %>
-    <% else %>
-      <%= current_user.user_name %>
-    <% end %>
-    <%= ac.action %>
-
-    <% if ac.todo.present? %>
-      <%= link_to(ac.todo.title, team_project_todos_path(@team, ac.project)) %>
-    <% else %>
-      <p>
-        此任务已被删除
-      </p>
-    <% end %>
-    <hr>
+  <% title = "" %>
+  <%= ac.created_at.strftime('%H:%M:%S') %>
+  <% if ac.user.present? %>
+    <%= ac.user.user_name %>
+  <% else %>
+    <%= current_user.user_name %>
   <% end %>
+  <%= ac.action %>
+
+  <% if ac.todo.present? %>
+    <%= link_to(ac.todo.title, team_project_todos_path(@team, ac.project)) %>
+  <% else %>
+    <p>
+      此任务已被删除
+    </p>
+  <% end %>
+  <hr>
 <% end %>

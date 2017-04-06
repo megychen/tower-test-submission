@@ -1,5 +1,5 @@
 class Team < ApplicationRecord
-  after_create :change_team_owner
+  #after_create :change_team_owner
   belongs_to :user
   has_many :projects, dependent: :destroy
   validates :name, presence: true

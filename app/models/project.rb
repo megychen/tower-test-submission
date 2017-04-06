@@ -1,8 +1,4 @@
 class Project < ApplicationRecord
-
-  include PublicActivity::Model
-  tracked
-
   after_create :add_project_permission
   after_create :generate_event
 
@@ -20,8 +16,6 @@ class Project < ApplicationRecord
   def generate_event
     Event.create!(user_id: self.user.id, project_id: self.id, action: "创建了项目:")
   end
-
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
 
 end
 
