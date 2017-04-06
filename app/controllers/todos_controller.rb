@@ -3,24 +3,21 @@ class TodosController < ApplicationController
   before_action :find_team_and_project
   before_action :find_todo_list, :except => [:index, :new, :create]
   before_action :assign_todo, :only => [:start, :pause, :completed, :reopne]
-  before_action :check_project_permission, :only => [:show, :edit, :update, :destroy]
+  before_action :check_project_permission, :only => [:show, :edit, :update, :destroy, :move_up, :move_down]
 
   def index
-    @todos = @project.todos
+    @todos = @project.todos.order("position ASC")
   end
 
   def new
     @todo = Todo.new
+    @assignment = Assignment.new
   end
 
   def create
     @todo = Todo.new(todo_params)
+    @todo.user_id = params[:user_id]
     @todo.project = @project
-    # if params[:user_id].present?
-    #   @todo.user_id = params[:user_id]
-    # else
-    #   @todo.user = current_user
-    # end
 
     if @todo.save!
       redirect_to team_project_path(@team,@project)
@@ -78,6 +75,16 @@ class TodosController < ApplicationController
   def deleted
     @todo.deleted!
     flash[:notice] = "删除任务"
+    redirect_to :back
+  end
+
+  def move_up
+    @todo.move_higher
+    redirect_to :back
+  end
+
+  def move_down
+    @todo.move_lower
     redirect_to :back
   end
 

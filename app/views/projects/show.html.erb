@@ -33,6 +33,7 @@
                 <% else %>
                   <span class="label label-default">未指派时间</span>
                 <% end %>
+
               </td>
               <td>
                 <%= render "todos/state_option", team: @team, project: @project, todo: todo %>
@@ -42,6 +43,10 @@
               </td>
               <td>
                 <%= link_to("移除任务", team_project_todo_path(@team, @project, todo), method: :delete) %>
+              </td>
+              <td>
+                <%= link_to("上移", move_up_team_project_todo_path(@team,@project,todo), :method => :post) %> |
+                <%= link_to("下移", move_down_team_project_todo_path(@team,@project,todo), :method => :post) %>
               </td>
             </tr>
           <% end %>

@@ -1,4 +1,5 @@
 class Todo < ApplicationRecord
+  acts_as_list
   after_create :create_assignment
   after_create :generate_event
   after_update :generate_todo_status_event
@@ -10,6 +11,8 @@ class Todo < ApplicationRecord
   has_many :comments
   has_one :assignment, :dependent => :destroy
   accepts_nested_attributes_for :assignment, allow_destroy: true
+
+
 
   include AASM
 

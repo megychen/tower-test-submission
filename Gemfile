@@ -43,7 +43,8 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 gem 'aasm'
 gem 'public_activity'
 gem 'pundit'
-gem 'cancancan'
+#gem 'cancancan'
+gem 'acts_as_list'
 
 
 group :development, :test do

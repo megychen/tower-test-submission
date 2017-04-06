@@ -15,6 +15,8 @@ Rails.application.routes.draw do
           post :completed
           post :reopen
           post :deleted
+          post :move_up
+          post :move_down
         end
         resources :comments
         resources :assignments
