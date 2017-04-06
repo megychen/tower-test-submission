@@ -1,9 +1,11 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_team_permission, :only => [:show, :edit, :update, :destroy]
+  before_action :find_team, :only => [:show, :edit, :update, :destroy, :members]
 
   def index
-    @teams = current_user.teams
+    #@teams = current_user.teams
+    team_permissions = current_user.team_permissions.select("team_id")
+    @teams = Team.all.where(id: team_permissions)
   end
 
   def new
@@ -26,7 +28,6 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @team = Team.find(params[:id])
     project_accesses = current_user.accesses.select("project_id")
     @projects = @team.projects.where(id: project_accesses)
   end
@@ -36,7 +37,7 @@ class TeamsController < ApplicationController
   end
 
   def update
-    @team = Team.find(params[:id])
+    authorize @team
     if @team.update(team_params)
       redirect_to root_path
     else
@@ -45,15 +46,22 @@ class TeamsController < ApplicationController
   end
 
   def destroy
-    @team = Team.find(params[:id])
+    authorize @team
     @team.destroy
     redirect_to root_path
+  end
+
+  def members
   end
 
   private
 
   def team_params
     params.require(:team).permit(:name)
+  end
+
+  def find_team
+    @team = Team.find(params[:id])
   end
 
   def check_team_permission

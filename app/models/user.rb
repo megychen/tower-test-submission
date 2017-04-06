@@ -13,30 +13,29 @@ class User < ApplicationRecord
   has_many :projects
   has_many :events
   has_many :assignments, dependent: :destroy
+  has_many :team_permissions
 
   def create_team
     tm = teams.build
     tm.user_id = self.id
     tm.name = self.team_name
     tm.save
-    memb = tm.members.create
-    memb.user_id = self.id
-    memb.name = self.user_name
-    memb.email = self.email
-    memb.save
   end
 
-  def has_permission_to_team?(team)
-    team.members.exists?(user_id: self.id)
+  def is_team_member_of?(team)
+    team.team_permissions.exists?(user_id: self.id)
+  end
+
+  def is_project_member_of?(project)
+    project.accesses.exists?(user_id: self.id)
   end
 
   def has_permission_to_project?(project)
     access = self.accesses.find_by_project_id(project.id)
-    if access.present? 
+    if access.present?
       true
     else
       false
     end
   end
-
 end

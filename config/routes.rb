@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :teams do
     resources :projects do
+      member do
+        get :members
+      end
       resources :todos do
         member do
           post :start
@@ -18,8 +21,12 @@ Rails.application.routes.draw do
       end
       resources :accesses
     end
-    resources :members
+    #resources :members
     resources :events
+    resources :team_permissions
+    member do
+      get :members
+    end
   end
   root 'teams#index'
 end

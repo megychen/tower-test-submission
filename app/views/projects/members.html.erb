@@ -1,0 +1,31 @@
+<h2><%= @team.name %></h2>
+<div class="pull-right">
+  <% if check_team_permission(@team) %>
+    <%= link_to("邀请成员", new_team_team_permission_path(@team)) %>
+  <% end %>
+</div>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @project.accesses.each do |member| %>
+      <tr>
+        <td>
+          <td>
+            <%= member.user.user_name %>
+            <%= check_project_owner(member, @project) %>
+          </td>
+        </td>
+        <td><%= member.user.email %></td>
+        <td>
+          <% if check_project_permission(@project) %>
+            <%= link_to("移除成员", team_team_permission_path(@team, member), method: :delete) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -19,8 +19,10 @@
           <td><%= team.user.user_name %></td>
           <td><%= team.created_at %></td>
           <td>
-            <%= link_to("编辑", edit_team_path(team)) %> |
-            <%= link_to("删除", team_path(team), method: :delete) %>
+            <% if team.user == current_user %>
+              <%= link_to("编辑", edit_team_path(team)) %> |
+              <%= link_to("删除", team_path(team), method: :delete) %>
+            <% end %>
           </td>
         </tr>
       <% end %>

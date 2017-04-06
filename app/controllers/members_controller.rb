@@ -1,11 +1,17 @@
 class MembersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_team
-  before_action :find_team_and_project, :only => [:edit, :uupdate, :destroy]
+  before_action :find_team_and_member, :only => [:edit, :update, :destroy]
   before_action :check_team_permission, :except => [:index, :show]
 
   def index
     @members = @team.members
+    # team_permissions = current_user.team_permissions.select("user_id")
+    # @members = User.all.maps{ |u|
+    #
+    # }
+
+    #where(id: team_permissions)
   end
 
   def new
@@ -50,7 +56,7 @@ class MembersController < ApplicationController
     @team = Team.find(params[:team_id])
   end
 
-  def find_team_and_project
+  def find_team_and_member
     @member = Member.find(params[:id])
   end
 

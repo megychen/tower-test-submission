@@ -1,8 +1,13 @@
 <div class="col-md-8 col-md-offset-2">
   <div class="pull-right">
-    <%= link_to("编辑", edit_team_project_path(@team, @project)) %> |
-    <%= link_to("删除", team_project_path(@team, @project), method: :delete) %> |
-    <%= link_to("邀请成员", new_team_project_access_path(@team,@project)) %>
+    <%= link_to("所有成员", members_team_project_path(@team,@project)) %> |
+    <% if check_project_permission(@project) %>
+      <%= link_to("编辑", edit_team_project_path(@team, @project)) %> |
+      <%= link_to("删除", team_project_path(@team, @project), method: :delete) %> |
+      <%= link_to("邀请成员", new_team_project_access_path(@team,@project)) %>
+    <% else %>
+      <%= link_to("退出项目", team_project_access_path(@team, @project), method: :delete) %>
+    <% end %>
   </div>
   <h2><%= @project.title %></h2>
   <p>

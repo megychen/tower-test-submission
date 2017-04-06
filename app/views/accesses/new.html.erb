@@ -1,7 +1,7 @@
 <h2 class="text-center">邀请成员</h2>
 <div class="col-md-8 col-md-offset-2">
   <%= simple_form_for [@team,@project,@access] do |f| %>
-    <%= select_tag(:user_id, options_for_select(@team.members.map { |c| [c.name, c.user_id] }), :prompt => "邀请团队成员加入项目") %>
+    <%= select_tag(:user_id, options_for_select(@team.team_permissions.map { |c| [c.user.user_name, c.user_id] }), :prompt => "邀请团队成员加入项目") %>
     <%= f.input :permission, label: "设定成员权限", :collection => ["owner","member"] %>
     <%= f.submit "保存成员", class: "btn btn-success" %>
   <% end %>

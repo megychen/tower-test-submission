@@ -8,6 +8,7 @@ class Project < ApplicationRecord
   belongs_to :team
   has_many :todos
   belongs_to :user
+  has_many :accesses
 
   def add_project_permission
     Access.create(user_id: self.user.id, project_id: self.id, permission: "owner")

@@ -1,6 +1,9 @@
 <div class="col-md-12">
   <h2><%= @team.name %></h2>
   <span class="label label-info">所有项目</span>
+  <span class="label label-warning"><%= link_to("邀请成员", new_team_team_permission_path(@team)) %></span>
+  <span class="label label-info"><%= link_to("所有成员", members_team_path(@team)) %></span>
+
   <div class="pull-right">
     <%= link_to("创建项目", new_team_project_path(@team), class: "btn btn-primary") %>
   </div>
